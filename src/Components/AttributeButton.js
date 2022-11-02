@@ -6,7 +6,7 @@ const AttributeButton = ({ link, description }) => {
   return (
     <Wrapper>
       <div className="attributeButtonAndDescription">
-        <button className="attributeButton">
+        <button className="attributeButton" tabindex="0">
           <FiArrowDownLeft className="arrowButtonIcon" />
           {link}
         </button>
