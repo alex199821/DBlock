@@ -1,8 +1,29 @@
 import Wrapper from "../assets/wrappers/FormWrapper";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import { useQuery, useMutation } from "@apollo/client";
+import { FORM_INFO, ADD_SUBSCRIBER, ADDRESS } from "../queries";
+import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 
 const Form = () => {
+  const navigate = useNavigate();
+  const result = useQuery(FORM_INFO);
+  const resultAddress = useQuery(ADDRESS);
+
+  const [formInfo, setFormInfo] = useState([]);
+  const [address, setAddress] = useState([]);
+
+  useEffect(() => {
+    result.data && setFormInfo(result.data.formInfo);
+    resultAddress.data && setAddress(resultAddress.data.addressInfo);
+  }, [result, resultAddress]);
+
+  const [createSubscriber] = useMutation(ADD_SUBSCRIBER, {
+    onError: (error) => {
+      console.log(error);
+    },
+  });
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -31,82 +52,95 @@ const Form = () => {
         "You must agree to our policy to proceed."
       ),
     }),
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: (values, { resetForm }) => {
+      const { name, lastName, email } = values;
+      createSubscriber({ variables: { name, lastName, email } });
+      resetForm();
+      navigate("/success");
     },
     validateOnChange: false,
   });
-  return (
-    <Wrapper onSubmit={formik.handleSubmit}>
-      <h3>WE'LL KEEP YOU POSTED</h3>
-      <div className="inputContainer">
-        <label htmlFor="name" className="labelStyle">
-          Insert<b> ( name ) :</b>
-        </label>
-        <input
-          className="inputStyle"
-          type="text"
-          id="name"
-          name="name"
-          onChange={formik.handleChange}
-          value={formik.values.name}
-        />
-      </div>
-      <div className="inputContainer">
-        <label htmlFor="name" className="labelStyle">
-          Insert=<b>( last_name ) :</b>
-        </label>
-        <input
-          className="inputStyle"
-          type="text"
-          id="lastName"
-          name="lastName"
-          onChange={formik.handleChange}
-          value={formik.values.lastName}
-        />
-      </div>
-      <div className="inputContainer">
-        <label htmlFor="name" className="labelStyle">
-          <b>Email :</b>
-        </label>
-        <input
-          className="inputStyle"
-          type="email"
-          id="email"
-          name="email"
-          onChange={formik.handleChange}
-          value={formik.values.email}
-        />
-      </div>
-      <div className="termsCheckboxContainer">
-        <input
-          id="terms"
-          name="terms"
-          type="checkbox"
-          className="checkbox"
-          onChange={() => {
-            formik.setFieldValue("terms", !formik.values.terms);
-          }}
-          value={formik.values.terms}
-        />
-        <p className="termsLabel">
-          By clicking this box, I agree to this <b>terms & conditions</b> and{" "}
-          <b>privacy policy</b>
-        </p>
-      </div>
-      <button className="submitButton" type="submit">
-        {"//JOIN"}
-      </button>
-      {formik.errors.name ||
-      formik.errors.lastName ||
-      formik.errors.email ||
-      formik.errors.terms ? (
-        <div className="validationError">
-          <p>One or more fields have an error. Please check and try again.</p>
+  if (formInfo.terms && address) {
+    const {
+      email,
+      lastName: { standardLastName, highlightedLastName },
+      name: { standardName, highlightedName },
+      signupInfo,
+      submitButton,
+      terms,
+      errorMessage,
+    } = formInfo;
+    return (
+      <Wrapper onSubmit={formik.handleSubmit}>
+        <h3>{signupInfo}</h3>
+        <div className="inputContainer">
+          <label htmlFor="name" className="labelStyle">
+            {standardName}
+            <b>{highlightedName}</b>
+          </label>
+          <input
+            className="inputStyle"
+            type="text"
+            id="name"
+            name="name"
+            onChange={formik.handleChange}
+            value={formik.values.name}
+          />
         </div>
-      ) : null}
-      <p className="addressInForm">14, M. KOSTAVA ST.TBILISI, 0108, GEORGIA WELCOME@DBLOCK.COM</p>
-    </Wrapper>
-  );
+        <div className="inputContainer">
+          <label htmlFor="lastName" className="labelStyle">
+            {standardLastName}
+            <b>{highlightedLastName}</b>
+          </label>
+          <input
+            className="inputStyle"
+            type="text"
+            id="lastName"
+            name="lastName"
+            onChange={formik.handleChange}
+            value={formik.values.lastName}
+          />
+        </div>
+        <div className="inputContainer">
+          <label htmlFor="name" className="labelStyle">
+            <b>{email}</b>
+          </label>
+          <input
+            className="inputStyle"
+            type="email"
+            id="email"
+            name="email"
+            onChange={formik.handleChange}
+            value={formik.values.email}
+          />
+        </div>
+        <div className="termsCheckboxContainer">
+          <input
+            id="terms"
+            name="terms"
+            type="checkbox"
+            className="checkbox"
+            onChange={() => {
+              formik.setFieldValue("terms", !formik.values.terms);
+            }}
+            value={formik.values.terms}
+          />
+          <p className="termsLabel">{terms}</p>
+        </div>
+        <button className="submitButton" type="submit">
+          {submitButton}
+        </button>
+        {formik.errors.name ||
+        formik.errors.lastName ||
+        formik.errors.email ||
+        formik.errors.terms ? (
+          <div className="validationError">
+            <p>{errorMessage}</p>
+          </div>
+        ) : null}
+        <p className="addressInForm">{address.address}</p>
+      </Wrapper>
+    );
+  }
 };
 export default Form;

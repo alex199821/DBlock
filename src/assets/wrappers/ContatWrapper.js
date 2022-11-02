@@ -31,6 +31,11 @@ const Wrapper = styled.section`
   }
   @media (max-width: 1020px) {
     padding: 32px 32px;
+    .contactContainer {
+      h3 {
+      font-size: 20px;
+    }
+    }
   }
   @media (max-width: 767px) {
     display: none;
