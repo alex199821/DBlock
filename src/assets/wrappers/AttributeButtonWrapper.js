@@ -49,6 +49,8 @@ const Wrapper = styled.section`
         font-size: 13px;
         width: 150px;
         color: var(--blue);
+        margin-bottom: 25px;
+
         .arrowButtonIcon {
           width: 25px;
           color: var(--blue);

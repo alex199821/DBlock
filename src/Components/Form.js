@@ -8,22 +8,28 @@ import React, { useState, useEffect } from "react";
 
 const Form = () => {
   const navigate = useNavigate();
+
+  //Querys to get all form data and single address
   const result = useQuery(FORM_INFO);
   const resultAddress = useQuery(ADDRESS);
 
   const [formInfo, setFormInfo] = useState([]);
   const [address, setAddress] = useState([]);
 
+  //Useeffect to change state when query is updated
   useEffect(() => {
     result.data && setFormInfo(result.data.formInfo);
     resultAddress.data && setAddress(resultAddress.data.addressInfo);
   }, [result, resultAddress]);
 
+  //Mutation to add subscriber to database on submit
   const [createSubscriber] = useMutation(ADD_SUBSCRIBER, {
     onError: (error) => {
       console.log(error);
     },
   });
+
+  //Formik Library is used for form managment
   const formik = useFormik({
     initialValues: {
       name: "",

@@ -4,6 +4,7 @@ import Success from "./Pages/Success";
 import React, { useEffect } from "react";
 
 function App() {
+  //Style additional overflows when page is loaded
   useEffect(() => {
     document.body.style.overflow = "hidden";
   }, []);

@@ -99,17 +99,21 @@ const Wrapper = styled.section`
     }
   }
   @media (max-width: 767px) {
+    width: auto;
+    height: 100vw;
+    background-image: url("https://res.cloudinary.com/do8a4tbyb/image/upload/v1667451238/DBlock/web7Artboard-1-100-2048x1280_nbio33.jpg");
     .headerButtonsContainer {
       display: flex;
     }
     .headerTextContainer {
-      /* margin-top: calc(24vw - 15%); */
-      row-gap: 5px;
+      margin-top: calc(24vw - 15%);
+      row-gap: 0px;
       h1 {
-        font-size: 18px;
+        font-size: 28px;
+        margin-bottom: 25px;
       }
       h2 {
-        font-size: 11px;
+        font-size: 18px;
       }
     }
   }

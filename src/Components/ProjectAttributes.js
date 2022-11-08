@@ -4,8 +4,11 @@ import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { ALL_ATTRIBUTES } from "../queries";
 const ProjectAttributes = () => {
+  //query to fetch all additional attribute's data
   const result = useQuery(ALL_ATTRIBUTES);
   const [attributes, setAttributes] = useState([]);
+
+  //change state of attributes on query update
   useEffect(() => {
     result.data && setAttributes(result.data.allAttributes);
   }, [result]);

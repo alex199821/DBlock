@@ -14,7 +14,15 @@ const Video = () => {
     const { video } = videoSrc;
     return (
       <Wrapper>
-        <video width="100%" height="auto" autoPlay muted loop className="video">
+        <video
+          width="100%"
+          height="auto"
+          autoPlay={true}
+          muted
+          playsInline={true}
+          loop
+          className="video"
+        >
           <source src={video} type="video/mp4" />
         </video>{" "}
       </Wrapper>

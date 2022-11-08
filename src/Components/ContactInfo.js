@@ -5,6 +5,7 @@ import { CONTACTS } from "../queries";
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 const ContactInfo = () => {
+  //Graphql query to get all contacts data
   const result = useQuery(CONTACTS);
   const [contacts, setContacts] = useState([]);
   useEffect(() => {
@@ -12,6 +13,7 @@ const ContactInfo = () => {
   }, [result]);
 
   if (contacts) {
+    //Destrucuturinf of contacts data if there is one
     const { address, facebookPath, instagramPath } = contacts;
     return (
       <Wrapper>

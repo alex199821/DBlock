@@ -9,6 +9,7 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 
+//Module to connect Frontend with apollo server
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({

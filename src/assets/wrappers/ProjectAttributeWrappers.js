@@ -65,18 +65,11 @@ const Wrapper = styled.section`
       flex-direction: row;
       background-color: var(--white);
       width: 100%;
+      padding-bottom: 0px;
+      row-gap: 0px;
       .attributeButtonContainer {
         width: 50%;
         justify-content: center;
-        .attributeButton {
-          font-size: 13px;
-          width: 150px;
-          color: var(--blue);
-          .arrowButtonIcon {
-            width: 25px;
-            color: var(--blue);
-          }
-        }
       }
     }
   }

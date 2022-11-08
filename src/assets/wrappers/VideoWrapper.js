@@ -13,6 +13,9 @@ const Wrapper = styled.section`
     background-color: blue;
   }
   @media (max-width: 769px) {
+    .video {
+      /* position: absolute; */
+    }
   }
 `;
 
